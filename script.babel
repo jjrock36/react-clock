@@ -1,0 +1,87 @@
+class Seconds extends React.Component {
+  render() {
+    return (
+      <div className="second">
+        <div className="sec" id="sec">
+        </div>
+      </div>
+    )
+  }
+}
+
+class Minutes extends React.Component {
+  render() {
+    return (
+      <div className="minute">
+        <div className="min" id="min">
+        </div>
+      </div>
+    )
+  }
+}
+
+class Hours extends React.Component {
+  render() {
+    return (
+      <div className="hour">
+        <div className="hr" id="hr">
+        </div>
+      </div>
+    )
+  }
+}
+
+class Clock extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state={
+      date: new Date()
+    };
+  }
+  
+  componentDidMount() {
+    this.timerID = setInterval(
+      () => this.tick(), 1000
+    );
+  }
+  
+  componentWillUnMount() {
+    clearInterval(this.timerID);
+  }
+  
+  tick() {
+    const deg = 6;
+    const hr = document.getElementById('hr');
+    const min = document.getElementById('min');
+    const sec = document.getElementById('sec');
+    
+    let day = this.state.date;
+    let hh = day.getHours() * 30;
+    let mm = day.getMinutes() * deg;
+    let ss = day.getSeconds() * deg;
+    
+    this.setState({
+      date: new Date()
+    });
+    
+    hr.style.transform = 'rotateZ('+(hh+(mm/12))+'deg)';
+    min.style.transform = 'rotateZ('+mm+'deg)';
+    sec.style.transform = 'rotateZ('+ss+'deg)';
+  }
+  
+  render() {
+    return(
+    <div className="clock">
+        <h2 id="digital">{this.state.date.toLocaleTimeString()}</h2>
+        <Hours />
+        <Minutes />
+        <Seconds />
+    </div>
+    );
+  }
+}
+
+ReactDOM.render(
+<Clock />,
+  document.getElementById('clock')
+);
